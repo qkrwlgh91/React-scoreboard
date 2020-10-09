@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Header from './components/Header';
-import Player from './components/Plater';
+import Player from './components/Player';
 
 class App extends React.Component {
   state = {
