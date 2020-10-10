@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import Header from './components/Header';
 import Player from './components/Player';
+import AddPlayerForm from './components/AddPlayerForm';
+import _ from 'lodash';
 
 class App extends React.Component {
   state = {
@@ -33,6 +35,20 @@ class App extends React.Component {
     })
   }
 
+  handleAddPlayer = (name) => {
+    this.setState(prevState => {
+      const players = [ ...prevState.players ];
+
+      const maxObject = _.maxBy(players, 'id');
+      const maxId = maxObject.id + 1;
+      console.log("maxId: ", maxId);
+      players.unshift({id: maxId, name, score: 0});
+
+      return { players };
+    });
+  };
+
+
   render() {
     return (
       <div className="scoreboard">
@@ -42,6 +58,7 @@ class App extends React.Component {
         { this.state.players.map(item => <Player name={item.name} score={item.score}
         key = {item.id.toString()} removePlayer={this.handleRemovePlayer} id={item.id} 
         changeScore={this.handleChangeScore} />) }
+        <AddPlayerForm addPlayer={this.handleAddPlayer} />
       </div>
     );
   }
