@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
 import Header from './components/Header';
 import {CustomPlayer} from "./components/CustomPlayer";
 import AddPlayerForm from './components/AddPlayerForm';
 import _ from 'lodash';
+import {useSelector} from 'react-redux';
 
 const App = () => {
-  const [players, setPlayers] = useState(
+  const players = useSelector(state => state.playerReducer.players)
+
+   /*
+  const [players, setPlayers] = useState(   
    [
       {name: 'LDK', score: 0, id: 1},
       {name: 'HONG', score: 0, id: 2},
@@ -14,15 +18,19 @@ const App = () => {
       {name: 'PARK', score: 0, id: 4},
     ]
   );
+  */
+  /*
   const handleRemovePlayer = (id) => {
-    setPlayers(players.filter(item => item.id !== id));
+    //setPlayers(players.filter(item => item.id !== id));
+
     // this.setState(prevState => {
     //   return {
     //     players: prevState.players.filter(item => item.id !== id)
     //   }
     // })
   };
-
+*/
+/*
   const handleChangeScore = (id, delta) => {
     console.log("id: ", id, "delta: ", delta);
     players.forEach(player => {
@@ -30,7 +38,9 @@ const App = () => {
         player.score += delta;
       }
     });
-    setPlayers([ ...players ])
+
+    //setPlayers([ ...players ])
+
     // this.setState(prevState => {
     //   const players = [ ...prevState.players ];
     //   players.forEach(player => {
@@ -41,13 +51,16 @@ const App = () => {
     //   return { players }
     // })
   }
-
+*/
+/*
   const handleAddPlayer = (name) => {
     const maxObject = _.maxBy(players, 'id');
     const maxId = maxObject.id + 1;
     console.log(maxId);
     players.unshift({id: maxId, name, score: 0});
-    setPlayers([ ...players ]);
+
+    //setPlayers([ ...players ]);
+
     // this.setState(prevState => {
     //   const players = [ ...prevState.players ];
 
@@ -59,7 +72,7 @@ const App = () => {
     //   return { players };
     // });
   };
-
+*/
   const getHighScore = () => {
     const maxObject = _.maxBy(players, 'score');
     const highScore = maxObject.score;
@@ -78,10 +91,11 @@ const App = () => {
         name={item.name}
         score={item.score}
         isHighScore={item.score === getHighScore}
-        removePlayer={handleRemovePlayer}
-        changeScore={handleChangeScore}
+        //removePlayer={handleRemovePlayer}
+        //changeScore={handleChangeScore}
       />)}
-      <AddPlayerForm addPlayer={handleAddPlayer}/>
+      {/*<AddPlayerForm addPlayer={handleAddPlayer}/> redux에서는 여기서 전달하지 않으므로 삭제*/}
+      <AddPlayerForm />
     </div>
   )
 

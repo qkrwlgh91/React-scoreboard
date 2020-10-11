@@ -1,7 +1,10 @@
 import React, {useState, useRef} from 'react';
+import {useDispatch} from 'react-redux';
+import {addPlayer} from '../redux/actions';
 
 const AddPlayerForm =(props) => {
     const [value, setValue] = useState('');
+    const dispatch = useDispatch();
 
     //let formRef = React.createRef();
     let formRef = useRef();
@@ -25,7 +28,8 @@ const AddPlayerForm =(props) => {
         if (!formRef.current.checkValidity()) {
             return;
         }
-        props.addPlayer(value);
+        //props.addPlayer(value);
+        dispatch(addPlayer(value));
         setValue('');
     }
 
