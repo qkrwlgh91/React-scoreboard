@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Header from './components/Header';
-import Player from './components/Player';
+import {CustomPlayer} from "./components/CustomPlayer";
 import AddPlayerForm from './components/AddPlayerForm';
 import _ from 'lodash';
 
@@ -48,6 +48,13 @@ class App extends React.Component {
     });
   };
 
+  getHighScore() {
+    const maxObject = _.maxBy(this.state.players, 'score');
+    const highScore = maxObject.score;
+    // 0은 default이므로 0보다 클경우만 highScore로 지정
+    return highScore > 0? highScore : null;
+  }
+
 
   render() {
     return (
@@ -55,9 +62,10 @@ class App extends React.Component {
         <Header title="My scoreboard" players={this.state.players} />
 
         {/* Players List*/}
-        { this.state.players.map(item => <Player name={item.name} score={item.score}
+        { this.state.players.map(item => <CustomPlayer name={item.name} score={item.score}
         key = {item.id.toString()} removePlayer={this.handleRemovePlayer} id={item.id} 
-        changeScore={this.handleChangeScore} />) }
+        changeScore={this.handleChangeScore} 
+        isHighScore={item.score === this.getHighScore()} />) }
         <AddPlayerForm addPlayer={this.handleAddPlayer} />
       </div>
     );
