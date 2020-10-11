@@ -3,7 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import {CustomPlayer} from "./components/CustomPlayer";
 import AddPlayerForm from './components/AddPlayerForm';
-import _, { divide } from 'lodash';
+import _ from 'lodash';
 
 const App = () => {
   const [players, setPlayers] = useState(

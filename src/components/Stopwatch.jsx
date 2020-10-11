@@ -1,53 +1,69 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
-class Stopwatch extends Component {
-    tickRef;
+const Stopwatch = (props) => {
+    const [isRunning, setIsRunning] = useState(false);
+    const [timer, setTimer] = useState(0);
 
-    state = {
-        isRunning: false,
-        timer: 0
-    }
+    // useRef 사용
+    const refIsRunning = useRef(isRunning);
 
-    tick = () => {
+    const tick = () => {
         // isRunning이 true이면 timer를 1씩 증가
-        if (this.state.isRunning) {
-            this.setState(prevState => ({
-                timer: prevState.timer + 1
-            }))
+        console.log('tick:', isRunning, refIsRunning.current);
+        if (refIsRunning.current) {
+            //setTimer도 setState와 마찬가지로 이전값을 파라미터로 받는 함수를 적용할 수있다.
+            //setTimer(timer + 1);
+            setTimer(timer => timer + 1)
         }
+
+        // if (this.state.isRunning) {
+        //     this.setState(prevState => ({
+        //         timer: prevState.timer + 1
+        //     }))
+        // }
     }
     //Dom이 렌더링 된 직후에 호출되는 라이프 사이클
     // 3rd 라이브러리 로딩, 네트워크 호출
-    componentDidMount() {
-        this.tickRef = setInterval(this.tick, 1000);
-    }
+    // componentDidMount() {
+    //     this.tickRef = setInterval(this.tick, 1000);
+    // }
 
     // Dom이 파괴되기 직전에 호출되는 라이프 사이클
     // 리소스 해제 등등
-    componentWillUnmount() {
-        clearInterval(this.tickRef);
+    // componentWillUnmount() {
+    //     clearInterval(this.tickRef);
+    // }
+
+    const handleStopwatch = () => {
+        refIsRunning.current = !refIsRunning.current;
+        setIsRunning(!isRunning);
+        // this.setState(prevState => ({
+        //     isRunning: !prevState.isRunning
+        // }));
     }
 
-    handleStopwatch = () => {
-        this.setState(prevState => ({
-            isRunning: !prevState.isRunning
-        }));
+    const handleReset = () => {
+        setTimer(0);
+        //this.setState({timer: 0});
     }
 
-    handleReset = () => {
-        this.setState({timer: 0});
-    }
+    useEffect(() => {
+        let tickRef = setInterval(tick, 1000);
+        return () => {
+            clearInterval(tickRef);
+        }
+    })
 
-    render() {
+
         return (
             <div className="stopwatch">
                 <h2>Stopwatch</h2>
-                <span className="stopwatch-time">{this.state.timer}</span>
-                <button onClick={this.handleStopwatch}>{this.state.isRunning ? 'Stop' : 'Start'}</button>
-                <button onClick={this.handleReset}>Reset</button>
+                <span className="stopwatch-time">{timer}</span>
+                <button onClick={handleStopwatch}>{isRunning ? 'Stop' : 'Start'}</button>
+                <button onClick={handleReset}>Reset</button>
             </div>
         )
-    }
+    
 }
 
 export default Stopwatch;
