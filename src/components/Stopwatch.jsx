@@ -6,7 +6,7 @@ const Stopwatch = (props) => {
 
     // useRef 사용
     const refIsRunning = useRef(isRunning);
-
+/*
     const tick = () => {
         // isRunning이 true이면 timer를 1씩 증가
         console.log('tick:', isRunning, refIsRunning.current);
@@ -15,13 +15,20 @@ const Stopwatch = (props) => {
             //setTimer(timer + 1);
             setTimer(timer => timer + 1)
         }
+*/
+        // customer hooks
+        useInterval(() => {
+            if (isRunning) {
+                setTimer(timer => timer + 1);
+            }
+        }, 1000);
 
         // if (this.state.isRunning) {
         //     this.setState(prevState => ({
         //         timer: prevState.timer + 1
         //     }))
         // }
-    }
+    
     //Dom이 렌더링 된 직후에 호출되는 라이프 사이클
     // 3rd 라이브러리 로딩, 네트워크 호출
     // componentDidMount() {
@@ -46,14 +53,14 @@ const Stopwatch = (props) => {
         setTimer(0);
         //this.setState({timer: 0});
     }
-
+/*
     useEffect(() => {
         let tickRef = setInterval(tick, 1000);
         return () => {
             clearInterval(tickRef);
         }
     })
-
+*/
 
         return (
             <div className="stopwatch">
@@ -64,6 +71,26 @@ const Stopwatch = (props) => {
             </div>
         )
     
+}
+
+function useInterval(callback, delay) {
+    const savedCallback = useRef();
+
+    // Remember the latest callback.
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+
+
+    useEffect(() => {
+        function tick() {
+            savedCallback.current();
+        }
+        if (delay !== null) {
+            let id = setInterval(tick, delay);
+            return () => clearInterval(id);
+        }
+    }, [delay]);
 }
 
 export default Stopwatch;
